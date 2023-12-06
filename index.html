@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Visualizer</title>
+
+    <style>
+        #canvas-container {
+            text-align: center;
+        }
+
+        #canvas {
+            width: 100%;
+            height: 300px;
+            /* or set an explicit height in pixels */
+            border: none;
+
+        }
+
+        button {
+            margin: 5px;
+
+        }
+
+        footer {
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #ACE1AF;
+            padding: 10px;
+        }
+
+        #controls-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button onclick="randomizeArray()">Randomize Array</button>
+    <button onclick="applySort('insertion')">Insertion Sort</button>
+    <button onclick="applySort('selection')">Selection Sort</button>
+    <button onclick="applySort('bubble')">Bubble Sort</button>
+    <button onclick="applySort('quick')">Quick Sort</button>
+    <button onclick="applySort('merge')">Merge Sort</button>
+    <button onclick="applySort('shell')">Shell Sort</button>
+    <button onclick="changeSize()">Change Size</button>
+
+
+    <div id="canvas-container">
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <script>
+        // Sample array and corresponding values
+        let bars = [];
+
+        // Canvas setup
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Adjust canvas resolution to the device pixel ratio
+        const pixelRatio = window.devicePixelRatio || 1;
+        canvas.width = canvas.clientWidth * pixelRatio;
+        canvas.height = canvas.clientHeight * pixelRatio;
+        ctx.scale(pixelRatio, pixelRatio);
+
+        // Function to draw bars on the canvas
+        function drawBars() {
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const barWidth = canvas.width / bars.length;
+            const maxBarHeight = Math.max(...bars);
+
+            bars.forEach((bar, index) => {
+                const barHeight = (bar / maxBarHeight) * canvas.height;
+                const x = index * barWidth;
+                const y = canvas.height - barHeight;
+
+                // Draw the bar
+                ctx.fillStyle = '#3498db';
+                ctx.fillRect(x, y, barWidth, barHeight);
+
+                // Draw the value at the top of the bar
+                ctx.fillStyle = '#000';
+                ctx.fillText(bar, x, y - 5);
+            });
+        }
+
+        // Function to randomize the array
+        function randomizeArray() {
+            bars = Array.from({ length: 80 }, () => Math.floor(Math.random() * 50) + 1);
+            drawBars(); // Call drawBars to update the display
+        }
+
+        // Function to apply sorting algorithms
+        function applySort(algorithm) {
+            // Add sorting algorithm logic here
+            // For simplicity, let's just use a basic sort for now
+            bars.sort((a, b) => a - b);
+            drawBars(); // Call drawBars to update the display
+        }
+
+        // Function to change the size of bars
+        function changeSize() {
+            // Halve the height of all bars
+            bars = bars.map(bar => Math.max(1, Math.floor(bar / 2)));
+            drawBars(); // Call drawBars to update the display
+        }
+
+        // Initial draw of bars when the page loads
+        randomizeArray();
+
+
+        function skipBack() {
+            // Add logic for skip back
+        }
+
+        function stepBack() {
+            // Add logic for step back
+        }
+
+        function pause() {
+            // Add logic for pause
+        }
+
+        function stepForward() {
+            // Add logic for step forward
+        }
+
+        function changeCanvasSize() {
+            const newWidth = parseInt(document.getElementById('width').value);
+            const newHeight = parseInt(document.getElementById('height').value);
+
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+
+            drawBars();
+        }
+
+        // Initial draw of bars when the page loads
+        randomizeArray();
+    </script>
+</body>
+<footer>
+    <div id="controls-container">
+        <button onclick="skipBack()">Skip Back</button>
+        <button onclick="stepBack()">Step Back</button>
+        <button onclick="pause()">Pause</button>
+        <button onclick="stepForward()">Step Forward</button>
+        <label for="speed">Speed:</label>
+        <input type="number" id="speed" value="50">
+        <button onclick="changeCanvasSize()">Change Canvas Size</button>
+        <label for="width">W:</label>
+        <input type="number" id="width" value="800">
+        <label for="height">H:</label>
+        <input type="number" id="height" value="200">
+    </div>
+</footer>
+
+</html>
